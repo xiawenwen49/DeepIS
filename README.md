@@ -42,7 +42,7 @@ scikit_learn==0.23.2
 @inproceedings{deepis_wsdm20,
 title={DeepIS: Susceptibility Estimation on Social Networks},
 author={Wenwen Xia and Yuchen Li and Jun Wu and Shenghong Li},
-booktitle={Proceedings of the Fourteenth ACM International Conference on Web Search and Data Mining (WSDM '21), March 8--12, 2021, Virtual Event, Israel,
+booktitle={Proceedings of the Fourteenth ACM International Conference on Web Search and Data Mining (WSDM '21)}
 year={2021}
 }
 ```
