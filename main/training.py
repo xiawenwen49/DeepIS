@@ -290,7 +290,7 @@ class GetPrediction:
         return preds
 
 
-def get_predictions_new_seeds(model, fea_constructor, seed_vec, idx):
+def get_predictions_new_seeds(model, fea_constructor, seed_vec, idx, prob_matrix, seed_idx):
     """Given a new seed set on the same graph, predict each node's probability
     Actually you can also put into a new graph's prob_matrix, then the model could predict results on new graphs.
     Parameters
@@ -322,4 +322,5 @@ def get_predictions_new_seeds(model, fea_constructor, seed_vec, idx):
 
     preds = model(idx)
     preds = preds.detach().cpu().numpy()
-    return preds
+    final_preds = PIteration(prob_matrix, preds, seed_idx, True, 2)
+    return final_preds
