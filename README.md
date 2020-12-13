@@ -18,6 +18,7 @@ The two modules are trained in an end-to-end manner.
 
 **We illustrate the train/evaluate details in the Jupyter Notebook sample_deepis.ipynb.**
 
+### DeepIS architecture
 
 ![architecture](architecture.png?raw=true "Network architecture")
 
