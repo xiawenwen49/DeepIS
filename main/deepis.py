@@ -31,12 +31,12 @@ class DiffusionPropagate(nn.Module):
 
         return preds[idx]
 
-class DGISP(nn.Module):
+class DeepIS(nn.Module):
     """
     Essentially it's a node regression task.
     """
     def __init__(self, gnn_model: nn.Module, propagate: nn.Module):
-        super(DGISP, self).__init__()
+        super(DeepIS, self).__init__()
         self.gnn_model = gnn_model 
         self.propagate = propagate
 

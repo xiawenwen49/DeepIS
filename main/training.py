@@ -18,20 +18,20 @@ class FeatureCons:
     __qualname__ = 'FeatureCons'
 
     def __init__(self, name, niter=None):
-        if not name in ('dgisp', 'gcn', 'graphsage', 'gat', 'sgc', 'monstor'):
+        if not name in ('deepis', 'gcn', 'graphsage', 'gat', 'sgc', 'monstor'):
             raise AssertionError
         else:
-            if name == 'dgisp':
-                assert isinstance(niter, int) and niter >= 0, AssertionError('Assign an initial feature iteration number for DGISP')
+            if name == 'deepis':
+                assert isinstance(niter, int) and niter >= 0, AssertionError('Assign an initial feature iteration number for DeepIS')
             self.prob_matrix = None
             self.name = name
             self.niter = niter
-            if self.name == 'dgisp':
+            if self.name == 'deepis':
                 self.dim = niter + 1
             else:
                 self.dim = 1
 
-    def __dgisp_fea(self, seed_vec):
+    def __deepis_fea(self, seed_vec):
         seed_vec = seed_vec.reshape((-1, 1))
         import scipy.sparse as sp
         if sp.isspmatrix(self.prob_matrix):
@@ -46,20 +46,20 @@ class FeatureCons:
 
     @staticmethod
     def show_names():
-        string = ' '.join(['dgisp', 'gcn', 'graphsage', 'gat', 'sgc', 'monstor'])
+        string = ' '.join(['deepis', 'gcn', 'graphsage', 'gat', 'sgc', 'monstor'])
         print(string)
 
     def __call__(self, seed_vec):
-        if self.name == 'dgisp':
-            return self._FeatureCons__dgisp_fea(seed_vec)
+        if self.name == 'deepis':
+            return self._FeatureCons__deepis_fea(seed_vec)
         if self.name == 'gcn':
-            return self._FeatureCons__dgisp_fea(seed_vec)
+            return self._FeatureCons__deepis_fea(seed_vec)
         if self.name == 'graphsage':
-            return self._FeatureCons__dgisp_fea(seed_vec)
+            return self._FeatureCons__deepis_fea(seed_vec)
         if self.name == 'gat':
-            return self._FeatureCons__dgisp_fea(seed_vec)
+            return self._FeatureCons__deepis_fea(seed_vec)
         if self.name == 'sgc':
-            return self._FeatureCons__dgisp_fea(seed_vec)
+            return self._FeatureCons__deepis_fea(seed_vec)
         return seed_vec.reshape((-1, 1))
 
 
@@ -242,7 +242,7 @@ def train_model(model_name: str, model, fea_constructor, graph: SparseGraph, lea
     result['valtest'] = {'mean error': valtest_error}
     result['runtime'] = runtime
     result['runtime_perepoch'] = runtime_perepoch
-    if model_name == 'dgisp':
+    if model_name == 'deepis':
         model.gnn_model.features = None
     ckpt_name = '{}_{}_{}'.format(model_name, start_time_str, early_stopping.best_epoch)
     torch.save(model.state_dict(), ckpt_dir / ckpt_name)
