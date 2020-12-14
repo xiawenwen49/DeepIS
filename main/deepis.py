@@ -12,9 +12,9 @@ class Identity(nn.Module):
         return preds[idx]
 
 class DiffusionPropagate(nn.Module):
-    def __init__(self, prob_matrix, iter_n):
+    def __init__(self, prob_matrix, niter):
         super(DiffusionPropagate, self).__init__()
-        self.iter_n = iter_n # 迭代次数
+        self.niter = niter 
         if sp.isspmatrix(prob_matrix):
             prob_matrix = prob_matrix.toarray()
         
@@ -23,7 +23,7 @@ class DiffusionPropagate(nn.Module):
     def forward(self, preds, seed_idx, idx):
         # import ipdb; ipdb.set_trace()
         device = preds.device
-        for i in range(self.iter_n):
+        for i in range(self.niter):
             P2 = self.prob_matrix.T * preds.view((1, -1)).expand(self.prob_matrix.shape)
             P3 = torch.ones(self.prob_matrix.shape).to(device) - P2
             preds = torch.ones((self.prob_matrix.shape[0], )).to(device) - torch.prod(P3, dim=1)

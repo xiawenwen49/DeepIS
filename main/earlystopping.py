@@ -26,7 +26,7 @@ stopping_args = dict(
 class EarlyStopping:
     def __init__(
             self, model: Module, stop_varnames: List[StopVariable],
-            patience: int = 50, max_epochs: int = 300, remember: Best = Best.ALL):
+            patience: int = 10, max_epochs: int = 300, remember: Best = Best.ALL):
         self.model = model
         self.comp_ops = []
         self.stop_vars = []

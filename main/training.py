@@ -17,19 +17,19 @@ class FeatureCons:
     __module__ = __name__
     __qualname__ = 'FeatureCons'
 
-    def __init__(self, name, niter=None):
+    def __init__(self, name, ndim=None):
         if not name in ('deepis', 'gcn', 'graphsage', 'gat', 'sgc', 'monstor'):
             raise AssertionError
         else:
             if name == 'deepis':
-                assert isinstance(niter, int) and niter >= 0, AssertionError('Assign an initial feature iteration number for DeepIS')
+                assert isinstance(ndim, int) and ndim > 0, AssertionError('Assign an initial feature iteration number for DeepIS')
             self.prob_matrix = None
             self.name = name
-            self.niter = niter
+            self.ndim = ndim
             if self.name == 'deepis':
-                self.dim = niter + 1
+                self.ndim = ndim
             else:
-                self.dim = 1
+                self.ndim = 1
 
     def __deepis_fea(self, seed_vec):
         seed_vec = seed_vec.reshape((-1, 1))
@@ -38,7 +38,7 @@ class FeatureCons:
             self.prob_matrix = self.prob_matrix.toarray()
         assert seed_vec.shape[0] == self.prob_matrix.shape[0], 'Seed vector is illegal'
         attr_mat = [seed_vec]
-        for i in range(1, self.niter + 1):
+        for i in range(self.ndim-1):
             attr_mat.append(self.prob_matrix.T @ attr_mat[(-1)])
 
         attr_mat = np.concatenate(attr_mat, axis=(-1))
@@ -265,7 +265,6 @@ def get_predictions(model, idx, batch_size=None):
 
 
 class GetPrediction:
-    """给出一个predictor，封装model预测的全过程"""
     __module__ = __name__
     __qualname__ = 'GetPrediction'
 
@@ -322,5 +321,4 @@ def get_predictions_new_seeds(model, fea_constructor, seed_vec, idx, prob_matrix
 
     preds = model(idx)
     preds = preds.detach().cpu().numpy()
-    final_preds = PIteration(prob_matrix, preds, seed_idx, True, 2)
-    return final_preds
+    return preds
